@@ -52,6 +52,10 @@ service hostapd /system/bin/hostapd -dddd /data/misc/wifi/hostapd.conf
     oneshot
     disabled
 
+ service thermald /system/bin/thermald -c /system/etc/init.qcom.thermald_conf.sh
+    class main
+
+
 service wpa_supplicant /system/bin/wpa_supplicant -ddd \
     -ieth0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf \
     -I/system/etc/wifi/wpa_supplicant_overlay.conf \
@@ -75,9 +79,7 @@ service p2p_supplicant /system/bin/wpa_supplicant -ddd \
     oneshot
 
 service mpdecision /system/bin/mpdecision --no_sleep --avg_comp
-    class late_start
-    disabled
-    user root
+    class main
 
 service gpu_dcvsd /system/bin/gpu_dcvsd
     class late_start
@@ -86,9 +88,6 @@ service gpu_dcvsd /system/bin/gpu_dcvsd
 
 # CPU Frequency Governor
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "ondemand"
-   # write /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed 245760
-   # write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 245760
-   # write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 245760
     write /sys/devices/system/cpu/cpufreq/ondemand/up_threshold 90
     write /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate 25000
  chown system /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate
